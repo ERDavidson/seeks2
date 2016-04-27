@@ -1,0 +1,27 @@
+<h1>Welcome to Seeks!</h1>
+<div class='flash'>
+	<% if flash[:errors] %>
+		<div class='red flash_box'>
+			<p><%= flash[:errors] %></p>
+		</div>
+	<% end %>
+	<% if flash[:action_status] %>
+		<p class='green flash_box'><%= flash[:action_status] %></p>
+	<% end %>
+</div>
+<form action='/sessions/create' method='post'>
+	<p>Current users: Log in</p>
+	<table>
+		<tr>
+			<td>Email:</td>
+			<td><input type='text' name="user[email]"></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input type='password' name="user[password]"></td>
+		</tr>
+	</table>
+	<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"> 
+	<input type='submit' value='Log in'>
+</form>
+<p>Not a member?  <a href='/users/new'>Register here!</a></p>

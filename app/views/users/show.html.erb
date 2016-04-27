@@ -1,0 +1,63 @@
+<h1>User Profile: <%= @view_user[:name] %></h1>
+<div class='flash'>
+	<% if flash[:errors] %>
+		<div class='red flash_box'>
+			<p><%= flash[:errors] %></p>
+		</div>
+	<% end %>
+	<% if flash[:action_status] %>
+		<p class='green flash_box'><%= flash[:action_status] %></p>
+	<% end %>
+</div>
+<table>
+	<tr>
+		<td>User ID:</td>
+		<td><%= @view_user[:id] %></td>
+	</tr>
+	<tr>
+		<td>Name:</td>
+		<td><%= @view_user[:name] %></td>
+	</tr>
+	<tr>
+		<td>Email:</td>
+		<td><%= @view_user[:email] %></td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td>Secret</td>
+		<td>Likes</td>
+	</tr>
+	<% @secret_list.each do |this_secret| %>
+		<tr>
+			<td class='secret_list'>
+				<%= this_secret[:content] %>
+			</td>
+			<td><%= this_secret[:likes] %></td>
+			<td>		
+				<form action="/secrets/<%= this_secret[:id] %>" method='post'>
+					<input type='hidden' name='_method' value='delete'>
+					<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"> 
+					<input type='submit' value='Delete Secret'>
+				</form>
+			</td>
+		</tr>
+	<% end %>
+</table>
+<p>Tell me everything!</p>
+<form action='/secrets/create' method='post'>
+	<textarea class="new_secret" name="secret_content"></textarea>
+	<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"> 
+	<input type='submit' value='Share Secret'>
+</form>
+<div class='footer'>
+	<p><a href="/secrets">View Secrets</a> | <a href="/users/<%= current_user[:id] %>/edit">Edit Profile</a></p>
+	<p class='login_status'>
+		<form action='/sessions' method='post'>
+			Currently logged in as <%= current_user[:name] %>.
+			<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"> 
+			<input type='hidden' name='_method' value='delete'>
+			<input type='submit' value='Log out'>
+		</form>
+	</p>
+</div>
